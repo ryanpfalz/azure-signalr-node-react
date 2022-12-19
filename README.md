@@ -19,6 +19,10 @@ This sample builds on top of existing approaches documented by Microsoft, namely
 - [SignalR quickstart for JavaScript](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-quickstart-azure-functions-javascript)
 - [ASP.NET Core SignalR JavaScript client](https://learn.microsoft.com/en-us/aspnet/core/signalr/javascript-client?view=aspnetcore-7.0&tabs=visual-studio)
 
+SignalR is a solution that introduces real-time functionality to a webpage, addressing scenarios such as a user needing to refresh a webpage to fetch new data, or an application performing long-polling for data to become available.
+<br>
+Although the scenario presented in this codebase is simple and contrived, it should be viewed as a foundation for modification and expansion into more complex applications.
+
 ## Prerequisites
 
 -   [An Azure Subscription](https://azure.microsoft.com/en-us/free/) - for hosting cloud infrastructure

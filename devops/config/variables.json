@@ -1,0 +1,19 @@
+{
+    "env": "dev",
+    "dev": {
+        "resourceGroup": "",
+        "location": "centralUS",
+        "servicePrincipalName": "",
+        "containerRegistryName": "",
+        "webAppContainerAppName": "",
+        "webAppContainerImageName": "",
+        "webAppContainerInstanceName": "",
+        "logAnalyticsWorkspaceName": "",
+        "appServicePlan": "",
+        "appServiceName": "",
+        "functionName": "",
+        "storageAccountName": "",
+        "functionPythonVersion": "3.9",
+        "signalr": ""
+    }
+}
