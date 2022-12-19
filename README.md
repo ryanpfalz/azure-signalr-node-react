@@ -12,9 +12,12 @@
 
 This sample codebase demonstrates how to use Azure SignalR to add real-time functionality to a containerized web application hosted in Azure App Service written in [React.js](https://reactjs.org/) with a Node.js backend [proxy server](https://en.wikipedia.org/wiki/Proxy_server). This sample uses serverless Azure Functions for processing requests made by the application.
 <br>
-The motivation behind this guide is the observed lack of readily available documentation/open-source codebase examples using these technologies.
+The motivation behind this guide is the observed lack of readily available open-source codebase examples using these technologies.
 <br>
-This sample builds on top of existing approaches documented by Microsoft, namely [this document on serverless development and configuration with Azure SignalR](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-concept-serverless-development-config), and [this SignalR quickstart for JavaScript](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-quickstart-azure-functions-javascript).
+This sample builds on top of existing approaches documented by Microsoft, namely:
+- [Serverless development and configuration with Azure SignalR](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-concept-serverless-development-config)
+- [SignalR quickstart for JavaScript](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-quickstart-azure-functions-javascript)
+- [ASP.NET Core SignalR JavaScript client](https://learn.microsoft.com/en-us/aspnet/core/signalr/javascript-client?view=aspnetcore-7.0&tabs=visual-studio)
 
 ## Prerequisites
 
