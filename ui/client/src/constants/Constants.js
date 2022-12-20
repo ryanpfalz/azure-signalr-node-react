@@ -13,12 +13,7 @@ export const LanguageOptions = [
         value: "en",
         locale: "en-US",
         name: "footer.lang.english",
-    },
-    {
-        value: "es",
-        locale: "es-ES",
-        name: "footer.lang.spanish",
-    },
+    }
 ];
 
 export const serviceError = {
