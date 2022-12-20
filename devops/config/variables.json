@@ -1,19 +1,17 @@
 {
     "env": "dev",
     "dev": {
-        "resourceGroup": "",
+        "resourceGroup": "appinnov-demosignalr-rg",
         "location": "centralUS",
-        "servicePrincipalName": "",
-        "containerRegistryName": "",
-        "webAppContainerAppName": "",
-        "webAppContainerImageName": "",
-        "webAppContainerInstanceName": "",
-        "logAnalyticsWorkspaceName": "",
-        "appServicePlan": "",
-        "appServiceName": "",
-        "functionName": "",
-        "storageAccountName": "",
+        "containerRegistryName": "appinnov-demosignalr-acr",
+        "webAppContainerImageName": "appinnov-demosignalr-img",
+        "webAppContainerInstanceName": "appinnov-demosignalr-instance",
+        "logAnalyticsWorkspaceName": "appinnov-demosignalr-la",
+        "functionName": "appinnov-demosignalr-function",
+        "storageAccountName": "appinnov-demosignalr-storage",
         "functionPythonVersion": "3.9",
-        "signalr": ""
+        "signalr": "appinnov-demosignalr-signalr",
+        "containerAppIdentityName": "appinnov-demosignalr-identity",
+        "servicePrincipalName": "App1"
     }
 }

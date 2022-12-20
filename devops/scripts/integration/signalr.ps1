@@ -22,7 +22,6 @@ Write-Host "Created RG"
 Write-Host "Creating Storage Account and SignalR..."
 
 # storage
-# az cli works well for functions
 az storage account create --name $storageAccount --resource-group $rgName --sku "Standard_LRS"
 
 # signalr

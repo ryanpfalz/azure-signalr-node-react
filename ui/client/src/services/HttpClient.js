@@ -1,7 +1,3 @@
-// import configService from "./ConfigService";
-// import config from "../util/Config.json";
-
-// TODO modify this class to handle anonymous requests
 export class HttpClient {
     get = async (url) => {
         try {
@@ -34,10 +30,6 @@ export class HttpClient {
     generateUrl = async (url) => {
         return url;
     };
-
-    // TODO add put verb method
-    // TODO add anon request
-    // TODO set authorization header
 
     _processRequest = async (req, url) => {
         let resp = await fetch(await this.generateUrl(url), req);

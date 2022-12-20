@@ -3,7 +3,7 @@ name: Integration IaC Workflow
 on:
     push:
         branches:
-            - "NA" # prevent action
+            - "NA"
 
 jobs:
     # pass data to reusable workflow

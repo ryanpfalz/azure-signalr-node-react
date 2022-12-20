@@ -9,15 +9,7 @@ name: UI IaC Workflow
 on:
     push:
         branches:
-            - "NA" # prevent action
-            # - "main" # can't refer to env variable here
-        # pull_request:
-        #   branches: [main]
-        # TODO UNCOMMENT
-        # paths:
-        #     - "devops/bicep/**"
-        #     - "devops/config/**"
-        #     - "devops/scripts/**"
+            - "NA"
 
 jobs:
 
@@ -43,7 +35,7 @@ jobs:
             # run RG + ACR IaC pwsh
             - name: "Deploy Infrastructure"
               run: |
-                  ./devops/scripts/ui/infra_core.ps1
+                  ./devops/scripts/ui/aca.ps1
               shell: pwsh
 
 

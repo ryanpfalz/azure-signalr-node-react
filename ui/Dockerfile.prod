@@ -2,41 +2,26 @@ FROM node:16.17-alpine as client-build
 
 # WORKDIR /app
 WORKDIR /usr/src/app/client
-# add `/app/node_modules/.bin` to $PATH
-# ENV PATH /app/node_modules/.bin:$PATH
-# ENV PATH /usr/src/app/node_modules/.bin:$PATH
-# COPY client/ ./client/
+
 # install app dependencies
 COPY client/package*.json ./
-# COPY client/package-lock.json ./
-# RUN cd client && npm install --legacy-peer-deps && npm run build
-#-- silent
 RUN npm install --legacy-peer-deps
+
 # add app
 COPY /client ./
 # build app
 RUN npm run build
 
 FROM node:16.17-alpine AS server-build
-# WORKDIR /root/
 COPY server/package*.json ./server/
 RUN cd server && npm install
 COPY server/ ./server/
 
-# production environment
-# FROM nginx:stable-alpine as prod
-# WORKDIR /root/
-# COPY --from=client-build /usr/src/app/client/build ./client/build
-# COPY --from=server-build /server /usr/share/nginx/html
-# EXPOSE 80
-# CMD ["nginx", "-g", "daemon off;"]
-
 FROM node:16.17-alpine as deploy
-# RUN apk update && apk add bash
 
 # inject env var
-ARG REACT_APP_API_KEY
-ENV REACT_APP_API_KEY ${REACT_APP_API_KEY}
+# ARG REACT_APP_API_KEY
+# ENV REACT_APP_API_KEY ${REACT_APP_API_KEY}
 WORKDIR /root/
 COPY --from=client-build /usr/src/app/client/build ./client/build
 COPY --from=server-build server/ ./server/
