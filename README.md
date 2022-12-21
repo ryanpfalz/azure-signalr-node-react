@@ -71,6 +71,7 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 ### _*Deploying the Codebase*_
 
 -   TODO - deploy via IaC
+- Deploy functions first
 
 ## Additional Resources
 

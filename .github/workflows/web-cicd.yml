@@ -3,11 +3,11 @@ name: UI CI/CD Workflow
 on:
     push:
         branches:
-            # - "NA" # prevent action
-            - "dev"
+            - "NA" # prevent action
+            # - "dev"
 
 env:
-    NEGOTIATE_FUNCTION_FOLDER: "signalr_negotiatefunction"
+    NEGOTIATE_FUNCTION_FOLDER: "signalr_broadcastfunction"
 
 jobs:
     # pass data to reusable workflow
