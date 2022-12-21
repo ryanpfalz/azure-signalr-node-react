@@ -24,12 +24,12 @@ jobs:
               with:
                   creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
 
-            - name: "Deploy Function resources"
-              run: |
-                  ./devops/scripts/integration/function.ps1
-              shell: pwsh
-
             - name: "Deploy SignalR resource"
               run: |
                   ./devops/scripts/integration/signalr.ps1
+              shell: pwsh
+
+            - name: "Deploy Function resources"
+              run: |
+                  ./devops/scripts/integration/function.ps1
               shell: pwsh

@@ -44,7 +44,7 @@ Write-Host "Updating SP and setting role..."
 # guide: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action
 
 # get service principal id by app name
-$spId = $(az ad sp list --display-name $spName --query '[].[appId][]' --out table)[2]
+$spId = $(az ad sp list --display-name $spName --query '[].[appId][]' --out tsv)
 
 # Update service principal for registry authentication (allow push/pull)
 # assign push role to registry

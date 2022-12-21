@@ -35,23 +35,38 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 ### _*Setting Up the Cloud Infrastructure*_
 
-#### GitHub Secrets (for automated deployments)
-
--   TODO
-
 #### Service Principal
 
--   TODO
-
-#### Integration Services
-
--   TODO
+-   Set up SP and secret
 
 #### Web Application
 
--   To deploy a container app, you must specify a container - so let's run our 
+-   Run aca.ps1
 
+#### Integration Services
 
+-   Run function.ps1 and signalr.ps1
+
+#### GitHub Actions Secrets (for automated deployments)
+
+-   Set up:
+-   AZURE_SP_CREDENTIALS:
+    -   For Application (client) ID and Directory (tenant) ID: `az ad sp show --id $spId`
+        -   Application (client) ID = `id` property
+        -   Directory (tenant) ID = `appOwnerOrganizationId` property
+    -   For Subscription ID: `az account show --query id --output tsv`
+    -   For secret: Get from Service Principal setup step above
+    -   Plug into object below:
+    ```
+    {
+       "clientId": "<GUID>",
+       "clientSecret": "<GUID>",
+       "subscriptionId": "<GUID>",
+       "tenantId": "<GUID>"
+    }
+    ```
+-   SIGNALR_CONNECTION_STRING: In SignalR service, go to 'Connection strings' blade
+-   For REGISTRY_USERNAME and REGISTRY_PASSWORD: `az acr credential show --name`
 
 ### _*Deploying the Codebase*_
 
