@@ -3,7 +3,8 @@ name: UI CI/CD Workflow
 on:
     push:
         branches:
-            - "NA" # prevent action
+            # - "NA" # prevent action
+            - "dev"
 
 env:
     NEGOTIATE_FUNCTION_FOLDER: "signalr_negotiatefunction"
@@ -29,6 +30,11 @@ jobs:
               with:
                   creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
 
+            # Variable replacement start (needs to happen after checkout, before build) ##
+            - name: Get current date
+              id: date
+              run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
             - name: "Get Negotiate Function Invoke URL"
               shell: pwsh
               run: |
@@ -38,8 +44,9 @@ jobs:
             - name: Variable replacement
               uses: microsoft/variable-substitution@v1
               with:
-                  files: "./web/server/config/serverConfig.json"
+                  files: "./web/client/src/util/Config.json, ./web/server/config/serverConfig.json"
               env:
+                  buildNumber: ${{ env.date }}-${{ github.run_number }}
                   negotiateFunctionUrl: ${{ env.negotiateFunctionInvokeUrl }}
               # Variable replacement end ##
 

@@ -1,6 +1,6 @@
 import Home from "./routes/home";
 import NotFound from "./routes/notFound";
-// import Header from "components/Header";
+import Footer from "components/Footer";
 import { Routes, Route } from "react-router-dom";
 import AppLocale from "../lngProvider";
 import { IntlProvider } from "react-intl";
@@ -30,6 +30,9 @@ const MainApp = () => {
                         <Route path="/" exact element={<Home />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
+                </div>
+                <div className={classes.footer}>
+                    <Footer />
                 </div>
             </IntlProvider>
         </div>
