@@ -86,7 +86,7 @@ if ($paramBuildInitialImage) {
     
 }
 else {
-    az deployment group create --resource-group $rgName --template-file '../../bicep/ui/aca.bicep' --parameters acrName=$acrName containerAppName=$paramContainerAppName containerPort=$containerPort useExternalIngress=$useExternalIngress containerPort=$containerPort acaIdentityName=$acaIdentityName caEnvName=$paramContainerAppEnvName containerImage=$paramContainerImageName logAnalyticsWsName=$logAnalyticsWsName tag=$paramContainerImageTag acaIdentityId=$miResourceId
+    az deployment group create --resource-group $rgName --template-file '../../bicep/web/aca.bicep' --parameters acrName=$acrName containerAppName=$paramContainerAppName containerPort=$containerPort useExternalIngress=$useExternalIngress containerPort=$containerPort acaIdentityName=$acaIdentityName caEnvName=$paramContainerAppEnvName containerImage=$paramContainerImageName logAnalyticsWsName=$logAnalyticsWsName tag=$paramContainerImageTag acaIdentityId=$miResourceId
 }
 
 Write-Host "Created ACA"
