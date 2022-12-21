@@ -35,7 +35,7 @@ jobs:
             # run RG + ACR IaC pwsh
             - name: "Deploy Infrastructure"
               run: |
-                  ./devops/scripts/ui/aca.ps1
+                  ./devops/scripts/web/aca.ps1
               shell: pwsh
 
 

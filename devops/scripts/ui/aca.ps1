@@ -65,7 +65,7 @@ Write-Host "Creating ACA..."
 # To deploy a container app, you must specify a container, so build and push an initial one
 $preBuildPath = Get-Location
 $preBuildPath = $preBuildPath.Path
-Set-Location "../../../ui"
+Set-Location "../../../web"
 
 # build the image
 $tag = "v1"

@@ -4,10 +4,11 @@ on:
     push:
         branches:
             - "NA"
+            # - "dev"
 
 env:
     AZURE_FUNCTIONAPP_PACKAGE_PATH: "."
-    SERVICE_BUS_CONN_VAR: "SERVICE_BUS_CONNECTION"
+    # SERVICE_BUS_CONN_VAR: "SERVICE_BUS_CONNECTION"
     SIGNALR_CONN_VAR: "democonnectionstring_SIGNALR"
     BROADCAST_FUNCTION_FOLDER: "signalr_broadcastfunction"
 
