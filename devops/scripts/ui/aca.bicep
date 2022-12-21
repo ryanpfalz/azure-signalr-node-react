@@ -40,19 +40,6 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2022-03-01' 
   }
 }
 
-// resource acaIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-//   name: acaIdentityName
-//   location: location
-// }
-
-// resource role_assignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-//   name: guid(subscription().id, acrPullGuid)
-//   properties: {
-//     principalId: acaIdentity.properties.principalId
-//     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', acrPullGuid) //AcrPull
-//   }
-// }
-
 resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: containerAppName
   location: location

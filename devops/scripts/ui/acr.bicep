@@ -11,8 +11,6 @@ param location string = resourceGroup().location
 param acrSku string = 'Basic'
 
 param acaIdentityName string
-// from https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
-// var acrPullGuid = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
 resource acrResource 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' = {
   name: acrName
@@ -29,14 +27,6 @@ resource acaIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-3
   name: acaIdentityName
   location: location
 }
-
-// resource role_assignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-//   name: guid(subscription().id, acrPullGuid)
-//   properties: {
-//     principalId: acaIdentity.properties.principalId
-//     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', acrPullGuid) //AcrPull
-//   }
-// }
 
 @description('Output the login server property for later use')
 output loginServer string = acrResource.properties.loginServer

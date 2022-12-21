@@ -84,5 +84,7 @@ az deployment group create --resource-group $rgName --template-file './aca.bicep
 
 Write-Host "Created ACA"
 
+# steps performed outside of pipeline - configure pipeline secrets: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action#save-credentials-to-github-repo
+
 # reset wd
 Set-Location $origPath
