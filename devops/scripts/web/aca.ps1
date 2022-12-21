@@ -3,7 +3,8 @@ param(
     [String]$paramContainerAppName,
     [String]$paramContainerAppEnvName,
     [String]$paramContainerImageName,
-    [String]$paramContainerImageTag
+    [String]$paramContainerImageTag,
+    [Bool]$paramBuildInitialImage
 )
 
 $origPath = Get-Location
@@ -62,25 +63,31 @@ az provider register --namespace Microsoft.ContainerInstance
 Write-Host "Ready to Build + Push image"
 Write-Host "Creating ACA..."
 
-# To deploy a container app, you must specify a container, so build and push an initial one
-$preBuildPath = Get-Location
-$preBuildPath = $preBuildPath.Path
-Set-Location "../../../web"
+if ($paramBuildInitialImage) {
 
-# build the image
-$tag = "v1"
-$imageNameNoTag = $acrName + ".azurecr.io/" + $imageName
-$imageNameTag = $imageNameNoTag + ":" + $tag
-docker build -t $imageNameTag -f "Dockerfile.prod" . 
+    # To deploy a container app, you must specify a container, so build and push an initial one (it wont work since env vars arent set yet)
+    $preBuildPath = Get-Location
+    $preBuildPath = $preBuildPath.Path
+    Set-Location "../../../ui"
 
-# push it to ACR
-az acr login --name $acrName
-docker push $imageNameTag
+    # build the image
+    $tag = "v1"
+    $imageNameNoTag = $acrName + ".azurecr.io/" + $imageName
+    $imageNameTag = $imageNameNoTag + ":" + $tag
+    docker build -t $imageNameTag -f "Dockerfile.prod" . 
 
-Set-Location $preBuildPath
+    # push it to ACR
+    az acr login --name $acrName
+    docker push $imageNameTag
 
-# deploy ACA with the initial image
-az deployment group create --resource-group $rgName --template-file './aca.bicep' --parameters acrName=$acrName containerAppName=$containerAppName containerPort=$containerPort useExternalIngress=$useExternalIngress containerPort=$containerPort caEnvName=$containerAppEnvName logAnalyticsWsName=$logAnalyticsWsName containerImage=$imageName tag=$tag acaIdentityId=$miResourceId
+    Set-Location $preBuildPath
+
+    az deployment group create --resource-group $rgName --template-file './aca.bicep' --parameters acrName=$acrName containerAppName=$containerAppName containerPort=$containerPort useExternalIngress=$useExternalIngress containerPort=$containerPort caEnvName=$containerAppEnvName logAnalyticsWsName=$logAnalyticsWsName containerImage=$imageName tag=$tag acaIdentityId=$miResourceId
+    
+}
+else {
+    az deployment group create --resource-group $rgName --template-file '../../bicep/ui/aca.bicep' --parameters acrName=$acrName containerAppName=$paramContainerAppName containerPort=$containerPort useExternalIngress=$useExternalIngress containerPort=$containerPort acaIdentityName=$acaIdentityName caEnvName=$paramContainerAppEnvName containerImage=$paramContainerImageName logAnalyticsWsName=$logAnalyticsWsName tag=$paramContainerImageTag acaIdentityId=$miResourceId
+}
 
 Write-Host "Created ACA"
 

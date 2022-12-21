@@ -32,10 +32,10 @@ jobs:
               with:
                   creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
 
-            # run RG + ACR IaC pwsh
+            # run RG + ACR IaC pwsh with default image
             - name: "Deploy Infrastructure"
               run: |
-                  ./devops/scripts/web/aca.ps1
+                ./devops/scripts/web/aca.ps1 ${{ fromJson(needs.configuration.outputs.variables).webAppContainerAppName }} ${{ fromJson(needs.configuration.outputs.variables).webAppContainerAppEnvName }} ${{ fromJson(needs.configuration.outputs.variables).webAppContainerImageName }} ${{ github.sha }} $True
               shell: pwsh
 
 
