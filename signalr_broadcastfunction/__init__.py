@@ -5,7 +5,7 @@ import uuid
 import json
 
 
-def main(message: func.ServiceBusMessage, signalRMessages: func.Out[str]) -> None:
+def main(message: func.HttpRequest, signalRMessages: func.Out[str]) -> None:
 
     message_body = message.get_body().decode('utf-8')
 

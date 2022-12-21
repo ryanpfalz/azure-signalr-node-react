@@ -1,3 +1,4 @@
 {
-    "negotiateFunctionUrl": "<Function-URL>"
+    "negotiateFunctionUrl": "http://localhost:7071/api/signalr_negotiatefunction",
+    "broadcastFunctionUrl": "http://localhost:7071/api/signalr_broadcastfunction"
 }
