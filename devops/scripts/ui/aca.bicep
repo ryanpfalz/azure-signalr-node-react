@@ -4,14 +4,14 @@ param acrName string
 param containerAppName string
 param useExternalIngress bool
 param containerPort int
-param acaIdentityName string
+param acaIdentityId string
 param caEnvName string
 param containerImage string
 param logAnalyticsWsName string
 param tag string
 
 // from https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
-var acrPullGuid = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+// var acrPullGuid = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
 var imageConcat = '${acrName}.azurecr.io/${containerImage}:${tag}'
 
@@ -40,18 +40,18 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2022-03-01' 
   }
 }
 
-resource acaIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-  name: acaIdentityName
-  location: location
-}
+// resource acaIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+//   name: acaIdentityName
+//   location: location
+// }
 
-resource role_assignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(subscription().id, acrPullGuid)
-  properties: {
-    principalId: acaIdentity.properties.principalId
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', acrPullGuid) //AcrPull
-  }
-}
+// resource role_assignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+//   name: guid(subscription().id, acrPullGuid)
+//   properties: {
+//     principalId: acaIdentity.properties.principalId
+//     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', acrPullGuid) //AcrPull
+//   }
+// }
 
 resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: containerAppName
@@ -59,26 +59,18 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   identity: {
     type: 'SystemAssigned,UserAssigned'
     userAssignedIdentities: {
-      '${acaIdentity.id}': {}
+      '${acaIdentityId}': {}
     }
   }
   properties: {
     managedEnvironmentId: containerAppEnvironment.id
     configuration: {
       activeRevisionsMode: 'Multiple'
-      //secrets: [
-      //  {
-      //    name: 'servicebusconnectionstring'
-      //    value: sbaccess.listKeys().primaryConnectionString
-      //  }
-      //]
 
       registries: [
         {
           server: '${acrName}.azurecr.io'
-          //username: acrName
-          //passwordSecretRef: 'acrtokenpwd'
-          identity: acaIdentity.id
+          identity: acaIdentityId
         }
       ]
       ingress: {
@@ -91,16 +83,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
         {
           image: imageConcat
           name: containerImage
-          //env: [
-          //  {
-          //    name: 'serviceBusQueueName'
-          //    value: serviceBusQueueName
-          //  }
-          //  {
-          //    name: 'ConnectionString'
-          //    secretRef: 'servicebusconnectionstring'
-          //  }
-          //]
           command: [
           ]
         }
@@ -108,21 +90,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
       scale: {
         minReplicas: 1
         maxReplicas: 2
-        //rules: [
-        //  {
-        //    name: 'queue-based-autoscaling'
-        //    custom: {
-        //      type: 'azure-servicebus'
-        //      metadata: {
-        //        queueName: serviceBusQueueName
-        //        messageCount: '20'
-        //      }
-        //      auth: [ {
-        //          secretRef: 'servicebusconnectionstring'
-        //          triggerParameter: 'connection'
-        //        } ]
-        //    }
-        //  } ]
       }
     }
   }

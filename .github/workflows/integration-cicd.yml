@@ -3,7 +3,7 @@ name: Integration CI/CD Workflow
 on:
     push:
         branches:
-            - "NA" # prevent action
+            - "NA"
 
 env:
     AZURE_FUNCTIONAPP_PACKAGE_PATH: "."

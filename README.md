@@ -43,13 +43,15 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 -   TODO
 
-#### Web Application
-
--   TODO
-
 #### Integration Services
 
 -   TODO
+
+#### Web Application
+
+-   To deploy a container app, you must specify a container - so let's run our 
+
+
 
 ### _*Deploying the Codebase*_
 

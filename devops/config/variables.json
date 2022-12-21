@@ -3,14 +3,16 @@
     "dev": {
         "resourceGroup": "appinnov-demosignalr-rg",
         "location": "centralUS",
-        "containerRegistryName": "appinnov-demosignalr-acr",
+        "containerRegistryName": "appinnovdemosignalracr",
         "webAppContainerImageName": "appinnov-demosignalr-img",
         "webAppContainerInstanceName": "appinnov-demosignalr-instance",
+        "webAppContainerAppEnvName": "appinnov-demosignalr-appenv",
+        "webAppContainerAppName": "appinnov-demosignalr-web",
         "logAnalyticsWorkspaceName": "appinnov-demosignalr-la",
         "functionName": "appinnov-demosignalr-function",
-        "storageAccountName": "appinnov-demosignalr-storage",
+        "storageAccountName": "appinnovdemosignalrstorage",
         "functionPythonVersion": "3.9",
-        "signalr": "appinnov-demosignalr-signalr",
+        "signalr": "appinnovdemosignalr-svc",
         "containerAppIdentityName": "appinnov-demosignalr-identity",
         "servicePrincipalName": "App1"
     }
