@@ -1,0 +1,35 @@
+name: Integration IaC Workflow
+
+on:
+    push:
+        branches:
+            - "NA"
+
+jobs:
+    # pass data to reusable workflow
+    configuration:
+        name: "Configuration"
+        uses: ./.github/workflows/config.yml
+
+    coreInfra:
+        name: "Deploy Core Infrastructure"
+        needs: [configuration]
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Checkout Repo"
+              uses: actions/checkout@v2
+
+            - name: "Login via Azure CLI"
+              uses: azure/login@v1
+              with:
+                  creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
+
+            - name: "Deploy SignalR resource"
+              run: |
+                  ./devops/scripts/integration/signalr.ps1
+              shell: pwsh
+
+            - name: "Deploy Function resources"
+              run: |
+                  ./devops/scripts/integration/function.ps1
+              shell: pwsh

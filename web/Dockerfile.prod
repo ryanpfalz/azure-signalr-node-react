@@ -1,0 +1,29 @@
+FROM node:16.17-alpine as client-build
+
+# WORKDIR /app
+WORKDIR /usr/src/app/client
+
+# install app dependencies
+COPY client/package*.json ./
+RUN npm install --legacy-peer-deps
+
+# add app
+COPY /client ./
+# build app
+RUN npm run build
+
+FROM node:16.17-alpine AS server-build
+COPY server/package*.json ./server/
+RUN cd server && npm install
+COPY server/ ./server/
+
+FROM node:16.17-alpine as deploy
+
+# inject env var
+# ARG REACT_APP_API_KEY
+# ENV REACT_APP_API_KEY ${REACT_APP_API_KEY}
+WORKDIR /root/
+COPY --from=client-build /usr/src/app/client/build ./client/build
+COPY --from=server-build server/ ./server/
+EXPOSE 80
+CMD ["node", "./server/app/index.js"]

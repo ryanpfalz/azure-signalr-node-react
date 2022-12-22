@@ -1,0 +1,41 @@
+# example: https://github.com/tjcorr/actions-levelup-reference/blob/main/.github/workflows/triggers.yml
+
+# env:
+#     TARGET_BRANCH: "main" # is this needed?
+#     # ROOT_DIR: "AppInnovationSandbox"
+
+name: UI IaC Workflow
+
+on:
+    push:
+        branches:
+            - "NA"
+
+jobs:
+
+    # pass data to reusable workflow
+    configuration:
+      uses: ./.github/workflows/config.yml
+
+    # TODO add automated testing, vulnerability scanning
+
+    coreInfra:
+        name: "Deploy Core Infrastructure"
+        needs: [configuration]
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Checkout Repo"
+              uses: actions/checkout@v2
+
+            - name: "Login via Azure CLI"
+              uses: azure/login@v1
+              with:
+                  creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
+
+            # run RG + ACR IaC pwsh with default image
+            - name: "Deploy Infrastructure"
+              run: |
+                ./devops/scripts/web/aca.ps1 ${{ fromJson(needs.configuration.outputs.variables).webAppContainerAppName }} ${{ fromJson(needs.configuration.outputs.variables).webAppContainerAppEnvName }} ${{ fromJson(needs.configuration.outputs.variables).webAppContainerImageName }} ${{ github.sha }} $True
+              shell: pwsh
+
+
