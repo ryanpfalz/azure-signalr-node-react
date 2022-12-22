@@ -12,7 +12,7 @@
 
 This sample codebase demonstrates how to use Azure SignalR to add real-time functionality to a serverless containerized web application hosted in Azure Container Apps written in [React.js](https://reactjs.org/) with a Node.js backend [proxy server](https://en.wikipedia.org/wiki/Proxy_server). This sample uses serverless Azure Functions for processing requests made by the application.
 <br>
-The motivation behind this guide is the observed lack of readily available open-source codebase examples using these technologies.
+The motivation behind this guide is the observed lack of readily available open-source codebase examples using these technologies together.
 <br>
 This sample builds on top of existing approaches documented by Microsoft, namely:
 
@@ -42,17 +42,19 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 #### Web Application
 
+-   Add the desired resource names in `devops/config/variables.json`
 -   Either:
     -   Update the branch trigger in the `.github/workflows/web-infra.yml ` file to trigger the GitHub Action, or
     -   Run the script `devops/scripts/web/aca.ps1` locally.
-    - This will create...
+-   This will create the Container App and all of the related services including a Container Registry, Container Instance, Managed Identity, Log Analytics Workspace, and Container App Environment.
 
 #### Integration Services
 
+-   Add the desired resource names in `devops/config/variables.json`
 -   Either:
     -   Update the branch trigger in the `.github/workflows/integration-infra.yml ` file to trigger the GitHub Action, or
     -   Run the scripts `devops/scripts/integration/function.ps1` and `devops/scripts/integration/signalr.ps1` locally.
-    - This will create...
+-   This will create the Function App and SignalR instances, in addition to all of the related services including a Storage Account, App Insights, and an App Service Plan.
 
 #### GitHub Actions Secrets (for automated deployments)
 
@@ -61,7 +63,7 @@ Although the scenario presented in this codebase is simple and contrived, it sho
         -   Application (client) ID = `id` property
         -   Directory (tenant) ID = `appOwnerOrganizationId` property
     -   For Subscription ID: `az account show --query id --output tsv`
-    -   For secret: Get from Service Principal setup step above
+    -   For secret: This is the client secret created alongside the App Registration above
     -   Plug these GUIDs into object below:
     ```
     {
@@ -71,17 +73,30 @@ Although the scenario presented in this codebase is simple and contrived, it sho
        "tenantId": "<GUID>"
     }
     ```
--   `SIGNALR_CONNECTION_STRING`: In SignalR service, go to 'Connection strings' blade.
--   For `REGISTRY_USERNAME` and `REGISTRY_PASSWORD`: Run the command `az acr credential show --name <container registry name>` and use the `username` and one of the password `values` returned.
+-   `SIGNALR_CONNECTION_STRING`: In the SignalR service that was created above, go to 'Connection strings' blade.
+-   `REGISTRY_USERNAME` and `REGISTRY_PASSWORD`: Run the command `az acr credential show --name <container registry name>`, and use the `username` and one of the password `values` returned.
 
 ### _*Deploying the Codebase*_
 
 -   _Note: This section will discuss deployment of the codebase via GitHub Actions. If you choose not to deploy via GitHub Actions, you may opt to manually deploy the code by following the automated tasks by hand or with another CI/CD tool - the steps will be the same._
--   Deploy functions first
+
+1.  Deploy the Negotiate and Broadcast functions first by updating the branch trigger in the `.github/workflows/integration-cicd.yml` file to trigger the GitHub Action.
+
+    -   This will deploy two functions to the above deployed Function App. The functions in this codebase are written in Python, and are described in more detail in the below section.
+
+2.  Then, deploy the web application by updating the branch trigger in the `.github/workflows/web-cicd.yml ` file to trigger the GitHub Action.
+
+    -   This will build a Docker image, push it to the Container Registry, and update the Container App.
 
 ## How it works
 
--   TODO - diagram
+![SignalR](/docs/diagram.png)
+_A diagram visually describing the flow of code from local development to GitHub to Azure, and the way the components communicate in Azure._
+
+1. To connect to SignalR, a valid access token is required. An HTTP-triggered "Negotiate" function is called by the client application to generate the required connection token. The negotiate function is described more [here](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-concept-serverless-development-config). When the web application is launched, the negotiate function is called immediately.
+2. To send a message, a "Broadcast" function is required, which uses the connection information fetched in Step 1, and binds a trigger to SignalR (in this application an HTTP trigger is used, but the function can be set up to be triggered by any number of bindings - see all supported bindings [here](https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings?tabs=csharp)).
+    - This is where logic/backend processing will take place. The broadcast function in this codebase takes a string as input, generates a [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) and uses it to create a cryptographic hash of the input string (this is a safeguarding technique used in authentication data stores).
+3. Clients (e.g., the application in this repository) can connect and listen to SignalR for new messages. In realtime, when SignalR recieves a new message, the client will consume it.
 
 ## Additional Resources
 
