@@ -160,19 +160,13 @@ function MessagingBody() {
                                     ? classes.responseSuccess
                                     : classes.responseError
                             }`}
-                            // TODO UNCOMMENT
-                            // style={
-                            //     result.value === null ? { display: "none" } : null
-                            // }
                         >
                             {result.value !== null ? (
                                 result.ok ? (
                                     <Typography>
                                         {intl.formatMessage({
                                             id: "messaging.messageSentPrefix",
-                                        }) +
-                                            ": " +
-                                            result.value}
+                                        })}
                                     </Typography>
                                 ) : (
                                     result.value

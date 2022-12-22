@@ -5,7 +5,7 @@ import uuid
 import json
 
 
-def main(message: func.HttpRequest, signalRMessages: func.Out[str]) -> None:
+def main(message: func.HttpRequest, signalRMessages: func.Out[str]) -> func.HttpResponse:
 
     message_body = message.get_body().decode('utf-8')
 
@@ -20,3 +20,5 @@ def main(message: func.HttpRequest, signalRMessages: func.Out[str]) -> None:
         'target': 'newMessage',
         'arguments': [salt, hashed]
     }))
+
+    return func.HttpResponse(json.dumps({'message': 'Done'}))
