@@ -78,7 +78,7 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 ### _*Deploying the Codebase*_
 
--   _Note: This section will discuss deployment of the codebase via GitHub Actions. If you choose not to deploy via GitHub Actions, you may opt to manually deploy the code by following the automated tasks by hand or with another CI/CD tool - the steps will be the same._
+-   _Note: This section will discuss deployment of the codebase via GitHub Actions. If you choose not to deploy via GitHub Actions, you may opt to manually deploy the code by following the automated tasks or with another CI/CD tool - the steps will be the same._
 
 1.  Deploy the Negotiate and Broadcast functions first by updating the branch trigger in the `.github/workflows/integration-cicd.yml` file to trigger the GitHub Action.
 

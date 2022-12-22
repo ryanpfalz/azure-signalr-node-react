@@ -29,9 +29,6 @@ function SignalR(props) {
         if (props.readyState && props.connectionInfo !== null) {
             if (props.connectionInfo.value.ok) {
                 // connect to hub with connection url and access key
-
-                // TODO write connection code on server and use socketio to transmit the messages to React?
-                // Tutorial: https://www.valentinog.com/blog/socket-react/
                 const cnxn = new signalR.HubConnectionBuilder()
                     .withUrl(props.connectionInfo.value.url, {
                         accessTokenFactory: () =>
@@ -40,9 +37,9 @@ function SignalR(props) {
                     .withAutomaticReconnect()
                     .build();
 
+                // signalr listeners
                 cnxn.on("newMessage", (salt, hash) => {
                     setLatestMessage({ salt, hash });
-                    // do something with the data you get from SignalR
                 });
                 cnxn.onclose(function () {
                     console.log("SignalR disconnected");
@@ -53,17 +50,8 @@ function SignalR(props) {
 
                 // start the connection
                 cnxn.start().catch(console.error);
-
-                // console.log(cnxn);
             }
-            // else {
-            //     console.log("SignalR component: Invalid state");
-            // }
         }
-        // else {
-        //     console.log(`readyState: ${props.readyState}`);
-        //     console.log(`connectionInfo.value.ok: ${props.connectionInfo}`);
-        // }
     }, [props.readyState, props.connectionInfo]);
 
     return (
