@@ -25,7 +25,7 @@ Write-Host "Creating Storage Account and SignalR..."
 az storage account create --name $storageAccount --resource-group $rgName --sku "Standard_LRS"
 
 # signalr
-az signalr create -n $signalrName -g $rgName --sku "Free_F1"
+az signalr create -n $signalrName -g $rgName --sku "Free_F1" --service-mode "Serverless"
 
 Write-Host "Created Storage Account and Function"
 

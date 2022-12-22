@@ -8,9 +8,9 @@
 
 ---
 
-# Simple real-time Web Application with Azure SignalR, React.js, and Node.js backend proxy server
+# Real-time serverless Web Application with Azure SignalR, React.js, and Node.js backend proxy server
 
-This sample codebase demonstrates how to use Azure SignalR to add real-time functionality to a containerized web application hosted in Azure Container Apps written in [React.js](https://reactjs.org/) with a Node.js backend [proxy server](https://en.wikipedia.org/wiki/Proxy_server). This sample uses serverless Azure Functions for processing requests made by the application.
+This sample codebase demonstrates how to use Azure SignalR to add real-time functionality to a serverless containerized web application hosted in Azure Container Apps written in [React.js](https://reactjs.org/) with a Node.js backend [proxy server](https://en.wikipedia.org/wiki/Proxy_server). This sample uses serverless Azure Functions for processing requests made by the application.
 <br>
 The motivation behind this guide is the observed lack of readily available open-source codebase examples using these technologies.
 <br>
@@ -35,17 +35,24 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 ### _*Setting Up the Cloud Infrastructure*_
 
-#### Service Principal
+#### App Registration
 
--   Set up SP and secret
+-   [Register a new application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+-   [Create a new client secret](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-a-client-secret) - you will use this if you choose to automate the deployment of the application using GitHub Actions
 
 #### Web Application
 
--   Run aca.ps1
+-   Either:
+    -   Update the branch trigger in the `.github/workflows/web-infra.yml ` file to trigger the GitHub Action, or
+    -   Run the script `devops/scripts/web/aca.ps1` locally.
+    - This will create...
 
 #### Integration Services
 
--   Run function.ps1 and signalr.ps1
+-   Either:
+    -   Update the branch trigger in the `.github/workflows/integration-infra.yml ` file to trigger the GitHub Action, or
+    -   Run the scripts `devops/scripts/integration/function.ps1` and `devops/scripts/integration/signalr.ps1` locally.
+    - This will create...
 
 #### GitHub Actions Secrets (for automated deployments)
 
@@ -69,12 +76,12 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 ### _*Deploying the Codebase*_
 
--   TODO - deploy via IaC
-- Deploy functions first
+-   _Note: This section will discuss deployment of the codebase via GitHub Actions. If you choose not to deploy via GitHub Actions, you may opt to manually deploy the code by following the automated tasks by hand or with another CI/CD tool - the steps will be the same._
+-   Deploy functions first
 
 ## How it works
 
-- TODO - diagram
+-   TODO - diagram
 
 ## Additional Resources
 
