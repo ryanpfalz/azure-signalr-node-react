@@ -7,7 +7,7 @@ export class MessagingService {
             value: input,
         };
 
-        var response = await httpClient.post(`/api/messages`, body);
+        var response = await httpClient.get(`/api/messages`, body);
 
         return await response.json();
     }
