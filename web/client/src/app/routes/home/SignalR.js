@@ -40,10 +40,8 @@ function SignalR(props) {
                     .withAutomaticReconnect()
                     .build();
 
-                cnxn.on("newMessage", (data) => {
-                    // console.log("New message recieved");
-                    // console.log(data);
-                    setLatestMessage(data);
+                cnxn.on("newMessage", (salt, hash) => {
+                    setLatestMessage({ salt, hash });
                     // do something with the data you get from SignalR
                 });
                 cnxn.onclose(function () {
@@ -54,8 +52,7 @@ function SignalR(props) {
                 );
 
                 // start the connection
-                cnxn.start()
-                    .catch(console.error);
+                cnxn.start().catch(console.error);
 
                 // console.log(cnxn);
             }
@@ -102,11 +99,7 @@ function SignalR(props) {
                     <br />
                     <Typography>
                         {<IntlMessages id="messaging.signalr.latestMessage" />}:{" "}
-                        <i>
-                            {latestMessage ?? (
-                                <IntlMessages id="messaging.signalr.noMessages" />
-                            )}
-                        </i>
+                        <i>{JSON.stringify(latestMessage)}</i>
                     </Typography>
                 </Grid>
             </Grid>

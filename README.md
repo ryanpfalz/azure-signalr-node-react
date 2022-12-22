@@ -49,14 +49,13 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 #### GitHub Actions Secrets (for automated deployments)
 
--   Set up:
--   AZURE_SP_CREDENTIALS:
-    -   For Application (client) ID and Directory (tenant) ID: `az ad sp show --id $spId`
+-   `AZURE_SP_CREDENTIALS`:
+    -   For Application (client) ID and Directory (tenant) ID: `az ad sp show --id <service principal ID>`
         -   Application (client) ID = `id` property
         -   Directory (tenant) ID = `appOwnerOrganizationId` property
     -   For Subscription ID: `az account show --query id --output tsv`
     -   For secret: Get from Service Principal setup step above
-    -   Plug into object below:
+    -   Plug these GUIDs into object below:
     ```
     {
        "clientId": "<GUID>",
@@ -65,8 +64,8 @@ Although the scenario presented in this codebase is simple and contrived, it sho
        "tenantId": "<GUID>"
     }
     ```
--   SIGNALR_CONNECTION_STRING: In SignalR service, go to 'Connection strings' blade
--   For REGISTRY_USERNAME and REGISTRY_PASSWORD: `az acr credential show --name`
+-   `SIGNALR_CONNECTION_STRING`: In SignalR service, go to 'Connection strings' blade.
+-   For `REGISTRY_USERNAME` and `REGISTRY_PASSWORD`: Run the command `az acr credential show --name <container registry name>` and use the `username` and one of the password `values` returned.
 
 ### _*Deploying the Codebase*_
 
