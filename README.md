@@ -73,6 +73,10 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 -   TODO - deploy via IaC
 - Deploy functions first
 
+## How it works
+
+- TODO - diagram
+
 ## Additional Resources
 
 -   [SignalR and Serverless? It comes true - _blog_](https://www.nellysattari.com/serverless-signalr/)

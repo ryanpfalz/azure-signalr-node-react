@@ -3,8 +3,7 @@ name: UI CI/CD Workflow
 on:
     push:
         branches:
-            # - "NA" # prevent action
-            - "dev"
+            - "NA"
 
 env:
     NEGOTIATE_FUNCTION_FOLDER: "signalr_negotiatefunction"
