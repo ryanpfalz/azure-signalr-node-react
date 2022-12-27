@@ -2,7 +2,7 @@
 
 ---
 
-| Page Type | Languages                                                  | Services                                                                                   | Tools                      |
+| Page Type | Languages                                                  | Key Services                                                                               | Tools                      |
 | --------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------- |
 | Sample    | JavaScript (Node.js, React.js) <br> Python <br> PowerShell | Azure SignalR <br> Azure Functions <br> Azure Container Apps <br> Azure Container Registry | Docker <br> GitHub Actions |
 
@@ -10,7 +10,7 @@
 
 # Real-time serverless Web Application with Azure SignalR, React.js, and Node.js backend proxy server
 
-This sample codebase demonstrates how to use Azure SignalR to add real-time functionality to a serverless containerized web application hosted in Azure Container Apps written in [React.js](https://reactjs.org/) with a Node.js backend [proxy server](https://en.wikipedia.org/wiki/Proxy_server). This sample uses serverless Azure Functions for processing requests made by the application.
+This sample codebase demonstrates how to use [Azure SignalR](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-overview) to add real-time functionality to a serverless containerized web application hosted in [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview) written in [React.js](https://reactjs.org/) with a Node.js backend [proxy server](https://en.wikipedia.org/wiki/Proxy_server). This sample uses serverless [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview) for processing requests made by the application.
 <br>
 The motivation behind this guide is the observed lack of readily available open-source codebase examples using these technologies together.
 <br>
@@ -46,7 +46,7 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 -   Either:
     -   Update the branch trigger in the `.github/workflows/web-infra.yml ` file to trigger the GitHub Action, or
     -   Run the script `devops/scripts/web/aca.ps1` locally.
--   This will create the Container App and all of the related services including a Container Registry, Container Instance, Managed Identity, Log Analytics Workspace, and Container App Environment.
+-   This will create the Container App and all of the related components including a [Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-intro), [Container Instance](https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview), [Managed Identity](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview), [Log Analytics Workspace](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview), and [Container App Environment](https://learn.microsoft.com/en-us/azure/container-apps/environment).
 
 #### Integration Services
 
@@ -54,17 +54,16 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 -   Either:
     -   Update the branch trigger in the `.github/workflows/integration-infra.yml ` file to trigger the GitHub Action, or
     -   Run the scripts `devops/scripts/integration/function.ps1` and `devops/scripts/integration/signalr.ps1` locally.
--   This will create the Function App and SignalR instances, in addition to all of the related services including a Storage Account, App Insights, and an App Service Plan.
+-   This will create the Function App and SignalR instances, in addition to all of the related components including a [Storage Account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview), [App Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net), and an [App Service Plan](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans).
 
 #### GitHub Actions Secrets (for automated deployments)
 
--   `AZURE_SP_CREDENTIALS`:
-    -   For Application (client) ID and Directory (tenant) ID: `az ad sp show --id <service principal ID>`
-        -   Application (client) ID = `id` property
-        -   Directory (tenant) ID = `appOwnerOrganizationId` property
-    -   For Subscription ID: `az account show --query id --output tsv`
-    -   For secret: This is the client secret created alongside the App Registration above
-    -   Plug these GUIDs into object below:
+-   To deploy to Azure using GitHub Actions, a handful of credentials are required for connection and configuration. In this example, they will be set as [Actions Secrets](https://docs.github.com/en/rest/actions/secrets?apiVersion=2022-11-28). For each of the below secrets, the secret name and steps on how to populate the secret is provided.
+
+1.  `AZURE_SP_CREDENTIALS`:
+
+    -   A JSON object that looks like the following will need to be populated with 4 GUIDs:
+
     ```
     {
        "clientId": "<GUID>",
@@ -73,8 +72,18 @@ Although the scenario presented in this codebase is simple and contrived, it sho
        "tenantId": "<GUID>"
     }
     ```
--   `SIGNALR_CONNECTION_STRING`: In the SignalR service that was created above, go to 'Connection strings' blade.
--   `REGISTRY_USERNAME` and `REGISTRY_PASSWORD`: Run the command `az acr credential show --name <container registry name>`, and use the `username` and one of the password `values` returned.
+
+    -   For clientId and tenantId, run: `az ad sp show --id <service principal ID>`
+
+        -   clientId = `id` property
+        -   tenantId = `appOwnerOrganizationId` property
+
+    -   For subscriptionId, run: `az account show --query id --output tsv`
+    -   For clientSecret: This is the client secret created alongside the App Registration above
+
+2.  `SIGNALR_CONNECTION_STRING`: In the Azure Portal, navigate to the SignalR service that was created above, and go to 'Connection strings' blade.
+3.  `REGISTRY_USERNAME`: Run the command `az acr credential show --name <container registry name>`, and use the `username` returned.
+4.  `REGISTRY_PASSWORD`: Run the command `az acr credential show --name <container registry name>`, and use one of the password `values` returned.
 
 ### _*Deploying the Codebase*_
 
@@ -88,15 +97,19 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
     -   This will build a Docker image, push it to the Container Registry, and update the Container App.
 
-## How it works
+## Architecture & Workflow
 
 ![SignalR](/docs/diagram.png)
 _A diagram visually describing the flow of code from local development to GitHub to Azure, and the way the components communicate in Azure._
 
 1. To connect to SignalR, a valid access token is required. An HTTP-triggered "Negotiate" function is called by the client application to generate the required connection token. The negotiate function is described more [here](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-concept-serverless-development-config). When the web application is launched, the negotiate function is called immediately.
 2. To send a message, a "Broadcast" function is required, which uses the connection information fetched in Step 1, and binds a trigger to SignalR (in this application an HTTP trigger is used, but the function can be set up to be triggered by any number of bindings - see all supported bindings [here](https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings?tabs=csharp)).
-    - This is where logic/backend processing will take place. The broadcast function in this codebase takes a string as input, generates a [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) and uses it to create a cryptographic hash of the input string (this is a safeguarding technique used in authentication data stores).
+    - This is where logic/backend processing will take place. The broadcast function in this codebase takes a string as input, generates a [salt](<https://en.wikipedia.org/wiki/Salt_(cryptography)>) and uses it to create a cryptographic hash of the input string (this is a safeguarding technique used in authentication data stores).
 3. Clients (e.g., the application in this repository) can connect and listen to SignalR for new messages. In real time, when SignalR receives a new message, the client will consume it over a [WebSocket](https://learn.microsoft.com/en-us/aspnet/signalr/overview/getting-started/introduction-to-signalr#signalr-and-websocket).
+
+## Potential Use Cases
+
+-   There are many practical use cases for enabling real-time functionality to a webpage, some of which include instant messaging, real-time dashboards, gaming, and sports.
 
 ## Additional Resources
 
