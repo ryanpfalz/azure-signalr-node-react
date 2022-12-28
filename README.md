@@ -82,8 +82,6 @@ Although the scenario presented in this codebase is simple and contrived, it sho
     -   For clientSecret: This is the client secret created alongside the App Registration above
 
 2.  `SIGNALR_CONNECTION_STRING`: In the Azure Portal, navigate to the SignalR service that was created above, and go to 'Connection strings' blade.
-3.  `REGISTRY_USERNAME`: Run the command `az acr credential show --name <container registry name>`, and use the `username` returned.
-4.  `REGISTRY_PASSWORD`: Run the command `az acr credential show --name <container registry name>`, and use one of the password `values` returned.
 
 ### _*Deploying the Codebase*_
 
