@@ -67,11 +67,13 @@ Although the scenario presented in this codebase is simple and contrived, it sho
     ```
     {
        "clientId": "<GUID>",
-       "clientSecret": "<GUID>",
+       "clientSecret": "<STRING>",
        "subscriptionId": "<GUID>",
        "tenantId": "<GUID>"
     }
     ```
+
+    -   You can find more details on creating this secret [here](https://github.com/marketplace/actions/azure-login#configure-a-service-principal-with-a-secret).
     -   For clientId, run: `az ad sp list --display-name <service principal name> --query '[].[appId][]' --out tsv`
     -   For tenantId, run: `az ad sp show --id <clientID> --query 'appOwnerOrganizationId' --out tsv`
     -   For subscriptionId, run: `az account show --query id --output tsv`
