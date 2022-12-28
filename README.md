@@ -62,7 +62,7 @@ Although the scenario presented in this codebase is simple and contrived, it sho
 
 1.  `AZURE_SP_CREDENTIALS`:
 
-    -   A JSON object that looks like the following will need to be populated with 4 GUIDs:
+    -   A JSON object that looks like the following will need to be populated with 4 values:
 
     ```
     {
