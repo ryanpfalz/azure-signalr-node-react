@@ -72,12 +72,8 @@ Although the scenario presented in this codebase is simple and contrived, it sho
        "tenantId": "<GUID>"
     }
     ```
-
-    -   For clientId and tenantId, run: `az ad sp show --id <service principal ID>`
-
-        -   clientId = `id` property
-        -   tenantId = `appOwnerOrganizationId` property
-
+    -   For clientId, run: `az ad sp list --display-name <service principal name> --query '[].[appId][]' --out tsv`
+    -   For tenantId, run: `az ad sp show --id <clientID> --query 'appOwnerOrganizationId' --out tsv`
     -   For subscriptionId, run: `az account show --query id --output tsv`
     -   For clientSecret: This is the client secret created alongside the App Registration above
 
